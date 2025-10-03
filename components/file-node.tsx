@@ -32,7 +32,11 @@ export const FileNode = memo(({ data }: FileNodeProps) => {
         ${isSelected ? "border-primary shadow-primary/20" : "border-border hover:border-primary/50"}
       `}
     >
-      <Handle type="target" position={Position.Top} className="w-2 h-2 !bg-primary border-none" />
+      <Handle 
+        type="target" 
+        position={Position.Top} 
+        className="w-1.5 h-1.5 !bg-primary/50 border-none -translate-y-[1px]" 
+      />
 
       <div className="flex items-center gap-2">
         <Icon className="w-4 h-4 text-primary flex-shrink-0" />
@@ -43,7 +47,11 @@ export const FileNode = memo(({ data }: FileNodeProps) => {
         <div className="mt-2 text-xs text-muted-foreground">{data.dependencyCount} dependencies</div>
       )}
 
-      <Handle type="source" position={Position.Bottom} className="w-2 h-2 !bg-primary border-none" />
+      <Handle 
+        type="source" 
+        position={Position.Bottom} 
+        className="w-1.5 h-1.5 !bg-primary/50 border-none translate-y-[1px]" 
+      />
     </motion.div>
   )
 })
