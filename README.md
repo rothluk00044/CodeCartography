@@ -20,11 +20,11 @@ Visualize your codebase's dependency graph in real-time. Understand structure, f
 
 ## Features
 
-- 🗺️ **Interactive Dependency Graph** - Visualize file relationships
-- 🔍 **Node Inspector** - Click any file to see detailed information
-- ⚠️ **Circular Dependency Detection** - Automatically identifies problematic patterns
-- 📊 **Project Statistics** - View total files, dependencies, and more
-- 🎨 **Beautiful UI** - Modern, dark-themed interface
+-  **Interactive Dependency Graph** - Visualize file relationships
+-  **Node Inspector** - Click any file to see detailed information
+-  **Circular Dependency Detection** - Automatically identifies problematic patterns
+-  **Project Statistics** - View total files, dependencies, and more
+-  **Beautiful UI** - Modern, dark-themed interface
 
 ## How to Use
 
