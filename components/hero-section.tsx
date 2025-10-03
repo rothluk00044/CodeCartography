@@ -60,9 +60,14 @@ export function HeroSection({ onStartVisualizing }: HeroSectionProps) {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="relative hidden lg:block"
         >
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[500px] bg-gradient-to-br from-blue-600/20 via-teal-600/10 to-purple-600/20 backdrop-blur-3xl border border-blue-500/20">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[500px] border border-blue-500/20">
+            <div 
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: 'url("/code-editor-with-syntax-highlighting-dark-theme.jpg")'
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           </div>
         </motion.div>
       </div>
