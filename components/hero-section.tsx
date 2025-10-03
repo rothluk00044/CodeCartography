@@ -12,19 +12,18 @@ export function HeroSection({ onStartVisualizing }: HeroSectionProps) {
   return (
     <div className="relative h-full w-full flex items-center justify-center px-8 lg:px-16">
       <div 
-        className="absolute inset-0 z-0 opacity-10 bg-cover bg-center"
+        className="absolute inset-0 z-0 opacity-15 bg-cover bg-center"
         style={{
           backgroundImage: 'url("/code-editor-with-syntax-highlighting-dark-theme.jpg")',
-          filter: 'blur(2px)'
+          filter: 'blur(1px)'
         }}
       />
-      <div className="relative z-10 max-w-7xl w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* Left Content */}
+      <div className="relative z-10 max-w-4xl w-full flex flex-col items-center text-center">
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="space-y-8"
+          className="space-y-8 max-w-3xl"
         >
           <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight">
             Map Your Code,
@@ -34,7 +33,7 @@ export function HeroSection({ onStartVisualizing }: HeroSectionProps) {
             Architecture.
           </h1>
 
-          <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-xl">
+          <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
             Instantly visualize your codebase's dependency graph. Understand structure, find bottlenecks, and identify
             dead code.
           </p>
@@ -50,24 +49,6 @@ export function HeroSection({ onStartVisualizing }: HeroSectionProps) {
             </Button>
 
             <p className="text-sm text-muted-foreground">Free to use. No sign-up required.</p>
-          </div>
-        </motion.div>
-
-        {/* Right Visual - Pure CSS gradient background */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative hidden lg:block"
-        >
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[500px] border border-blue-500/20">
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: 'url("/code-editor-with-syntax-highlighting-dark-theme.jpg")'
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           </div>
         </motion.div>
       </div>
