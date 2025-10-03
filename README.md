@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Codebase Cartographer
 
 Visualize your codebase's dependency graph in real-time. Understand structure, find bottlenecks, and identify circular dependencies.
@@ -44,3 +45,6 @@ Visualize your codebase's dependency graph in real-time. Understand structure, f
 ## License
 
 MIT
+=======
+# CodeCartography
+>>>>>>> cdd680b30c13a8715fd22c1392e5d3f17d2b172d
