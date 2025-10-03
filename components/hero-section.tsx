@@ -10,15 +10,14 @@ interface HeroSectionProps {
 
 export function HeroSection({ onStartVisualizing }: HeroSectionProps) {
   return (
-    <div className="relative h-full w-full flex items-center justify-center px-8 lg:px-16">
+    <div className="relative h-full w-full flex items-center justify-center px-8 lg:px-16 min-h-screen">
       <div 
         className="absolute inset-0 z-0 opacity-15 bg-cover bg-center"
         style={{
           backgroundImage: 'url("/code-editor-with-syntax-highlighting-dark-theme.jpg")',
-          filter: 'blur(1px)'
         }}
       />
-      <div className="relative z-10 max-w-4xl w-full flex flex-col items-center text-center">
+      <div className="relative z-10 max-w-4xl w-full flex flex-col items-center text-center -mt-16">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

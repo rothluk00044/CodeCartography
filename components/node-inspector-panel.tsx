@@ -1,10 +1,10 @@
 "use client"
 
 import { ArrowRight, ArrowLeft, GitBranch } from "lucide-react"
-import type { FileNode } from "@/lib/types"
+import type { CustomNode } from "@/lib/types"
 
 interface NodeInspectorPanelProps {
-  selectedNode: FileNode | null
+  selectedNode: CustomNode | null
 }
 
 export function NodeInspectorPanel({ selectedNode }: NodeInspectorPanelProps) {
@@ -56,7 +56,7 @@ export function NodeInspectorPanel({ selectedNode }: NodeInspectorPanelProps) {
           )}
         </div>
       ) : (
-        <p className="text-sm text-gray-500 py-8 text-center">Click a node on the graph to inspect its details.</p>
+        <p className="text-sm text-muted-foreground p-4">Click a node on the graph to inspect its details.</p>
       )}
     </div>
   )

@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useCallback, useEffect, useState } from "react"
-import { ReactFlow, Background, Controls, MiniMap, useNodesState, useEdgesState, type NodeTypes, type Edge } from "@xyflow/react"
+import { ReactFlow, Background, useNodesState, useEdgesState, type NodeTypes, type Edge } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 import { FileNode } from "./file-node"
 import { applyDagreLayout } from "@/lib/layout"
@@ -73,14 +73,6 @@ export function CodeGraph({ data, onNodeClick, selectedNodeId }: CodeGraphProps)
       className="bg-background"
     >
       <Background className="bg-muted/20" />
-      <Controls className="bg-card border border-border rounded-lg shadow-lg" />
-      <MiniMap
-        className="bg-card border border-border rounded-lg shadow-lg"
-        nodeColor={(node) => {
-          if (node.id === selectedNodeId) return "oklch(var(--primary))"
-          return "oklch(var(--muted))"
-        }}
-      />
     </ReactFlow>
   )
 }

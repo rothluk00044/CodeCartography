@@ -46,7 +46,7 @@ export function ProjectInfoPanel({ graphData }: ProjectInfoPanelProps) {
           )}
         </div>
       ) : (
-        <p className="text-sm text-gray-500 py-8 text-center">Upload a project to see information here.</p>
+        <p className="text-sm text-muted-foreground p-4">Upload a project to see information here.</p>
       )}
     </div>
   )
