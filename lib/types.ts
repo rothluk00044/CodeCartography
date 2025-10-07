@@ -6,6 +6,12 @@ export interface FileNodeData extends Record<string, unknown> {
   dependentCount?: number
   isCircular?: boolean
   isSelected?: boolean
+  codePreview?: {
+    snippet: string
+    language: string
+    startLine: number
+    endLine: number
+  }
   [key: string]: unknown
 }
 
