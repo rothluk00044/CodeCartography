@@ -1,10 +1,19 @@
 import dagre from "dagre"
 import type { GraphData } from "./types"
+import type { Edge, MarkerType } from "@xyflow/react"
 
 export function applyDagreLayout(data: GraphData): GraphData {
   const dagreGraph = new dagre.graphlib.Graph()
   dagreGraph.setDefaultEdgeLabel(() => ({}))
-  dagreGraph.setGraph({ rankdir: "TB", ranksep: 100, nodesep: 80 })
+  dagreGraph.setGraph({ 
+    rankdir: "TB",
+    ranksep: 150,
+    nodesep: 100,
+    edgesep: 50,
+    marginx: 50,
+    marginy: 50,
+    align: "UL"
+  })
 
   // Add nodes to dagre
   data.nodes.forEach((node) => {
@@ -31,8 +40,20 @@ export function applyDagreLayout(data: GraphData): GraphData {
     }
   })
 
+  // Enhance edges with better styling
+  const enhancedEdges = data.edges.map(edge => ({
+    ...edge,
+    type: 'smoothstep',
+    animated: false,
+    style: { stroke: 'hsl(var(--foreground))', strokeWidth: 1, opacity: 0.5 },
+    markerEnd: {
+      type: 'arrow' as MarkerType,
+      color: 'hsl(var(--foreground))',
+    },
+  } as Edge))
+
   return {
     nodes: layoutedNodes,
-    edges: data.edges,
+    edges: enhancedEdges,
   }
 }

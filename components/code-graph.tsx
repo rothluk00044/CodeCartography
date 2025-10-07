@@ -63,14 +63,23 @@ export function CodeGraph({ data, onNodeClick, selectedNodeId }: CodeGraphProps)
       nodeTypes={nodeTypes}
       fitView
       fitViewOptions={{ 
-        padding: 0.2,
-        minZoom: 0.6,
-        maxZoom: 1
+        padding: 0.5,
+        minZoom: 0.5,
+        maxZoom: 1.5
       }}
-      minZoom={0.3}
-      maxZoom={1.5}
+      minZoom={0.2}
+      maxZoom={2}
       defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
       className="bg-background"
+      snapToGrid={true}
+      snapGrid={[16, 16]}
+      elevateNodesOnSelect={true}
+      nodesDraggable={true}
+      nodesConnectable={false}
+      panOnDrag={true}
+      zoomOnScroll={true}
+      panOnScroll={false}
+      preventScrolling={true}
     >
       <Background className="bg-muted/20" />
     </ReactFlow>
