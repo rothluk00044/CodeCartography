@@ -80,9 +80,10 @@ function scanDirectory(dir: string, fileList: string[] = []): string[] {
 
 function parseFile(filePath: string, baseDir: string): FileInfo {
   const dependencies: string[] = []
+  let content = ''
 
   try {
-    const content = fs.readFileSync(filePath, "utf-8")
+    content = fs.readFileSync(filePath, "utf-8")
     
     // Extract code preview
     const lines = content.split('\n')
