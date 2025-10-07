@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 import { parse } from "@babel/parser"
 import traverse from "@babel/traverse"
-import type { GraphData, FileNode, AnalyzeResponse } from "./types"
+import type { GraphData, CustomNode, AnalyzeResponse } from "./types"
 
 const IGNORE_DIRS = ["node_modules", ".git", ".next", "dist", "build", "coverage", ".vercel", "out"]
 const VALID_EXTENSIONS = [".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"]
@@ -156,16 +156,16 @@ function resolveImportPath(importPath: string, fromFile: string, baseDir: string
 }
 
 function buildGraph(fileInfos: FileInfo[], baseDir: string): GraphData {
-  const nodes: FileNode[] = []
+  const nodes: CustomNode[] = []
   const edges: GraphData["edges"] = []
-  const nodeMap = new Map<string, FileNode>()
+  const nodeMap = new Map<string, CustomNode>()
 
   // Create nodes
   fileInfos.forEach((fileInfo) => {
     const relativePath = path.relative(baseDir, fileInfo.path)
     const fileName = path.basename(fileInfo.path)
 
-    const node: FileNode = {
+    const node: CustomNode = {
       id: fileInfo.path,
       type: "fileNode",
       data: {
