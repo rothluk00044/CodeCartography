@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 import { parse } from "@babel/parser"
 import traverse from "@babel/traverse"
-import type { GraphData, FileNode, AnalyzeResponse } from "./types"
+import type { GraphData, AnalyzeResponse, CustomNode } from "./types"
 
 const IGNORE_DIRS = ["node_modules", ".git", ".next", "dist", "build", "coverage", ".vercel", "out"]
 const VALID_EXTENSIONS = [".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"]
@@ -10,6 +10,12 @@ const VALID_EXTENSIONS = [".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"]
 interface FileInfo {
   path: string
   dependencies: string[]
+  preview: {
+    snippet: string
+    language: string
+    startLine: number
+    endLine: number
+  }
 }
 
 export async function analyzeCodebase(directoryPath: string): Promise<AnalyzeResponse> {
@@ -74,9 +80,21 @@ function scanDirectory(dir: string, fileList: string[] = []): string[] {
 
 function parseFile(filePath: string, baseDir: string): FileInfo {
   const dependencies: string[] = []
+  let content = ''
 
   try {
-    const content = fs.readFileSync(filePath, "utf-8")
+    content = fs.readFileSync(filePath, "utf-8")
+    
+    // Extract code preview
+    const lines = content.split('\n')
+    const previewLines = lines.slice(0, Math.min(20, lines.length)) // Get first 20 lines or less
+    const preview = {
+      snippet: previewLines.join('\n'),
+      language: path.extname(filePath).slice(1), // Remove the dot from extension
+      startLine: 1,
+      endLine: previewLines.length
+    }
+
     const ast = parse(content, {
       sourceType: "module",
       plugins: ["jsx", "typescript", "decorators-legacy"],
@@ -119,7 +137,16 @@ function parseFile(filePath: string, baseDir: string): FileInfo {
     console.warn(`Failed to parse ${filePath}:`, error)
   }
 
-  return { path: filePath, dependencies }
+  return { 
+    path: filePath, 
+    dependencies, 
+    preview: {
+      snippet: content || '',
+      language: path.extname(filePath).slice(1),
+      startLine: 1,
+      endLine: content ? content.split('\n').length : 1
+    }
+  }
 }
 
 function resolveImportPath(importPath: string, fromFile: string, baseDir: string): string | null {
@@ -156,21 +183,22 @@ function resolveImportPath(importPath: string, fromFile: string, baseDir: string
 }
 
 function buildGraph(fileInfos: FileInfo[], baseDir: string): GraphData {
-  const nodes: FileNode[] = []
+  const nodes: CustomNode[] = []
   const edges: GraphData["edges"] = []
-  const nodeMap = new Map<string, FileNode>()
+  const nodeMap = new Map<string, CustomNode>()
 
   // Create nodes
   fileInfos.forEach((fileInfo) => {
     const relativePath = path.relative(baseDir, fileInfo.path)
     const fileName = path.basename(fileInfo.path)
 
-    const node: FileNode = {
+    const node: CustomNode = {
       id: fileInfo.path,
       type: "fileNode",
       data: {
         label: fileName,
         dependencyCount: fileInfo.dependencies.length,
+        codePreview: fileInfo.preview
       },
       position: { x: 0, y: 0 },
     }
