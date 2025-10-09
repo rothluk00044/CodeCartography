@@ -3,6 +3,7 @@
     "@babel/parser": "^7.26.3",
     "@babel/traverse": "^7.26.5",
     "@emotion/is-prop-valid": "latest",
+    "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-hover-card": "^1.0.7",
