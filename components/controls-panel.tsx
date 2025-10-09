@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Upload, AlertCircle } from "lucide-react"
+import { AlertCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 
 interface ControlsPanelProps {
@@ -31,58 +31,10 @@ export function ControlsPanel({ onAnalyze, isAnalyzing, error }: ControlsPanelPr
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Upload Area */}
-        <div 
-          className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center space-y-3 hover:border-gray-600 transition-colors"
-          onDragOver={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-          onDrop={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const items = e.dataTransfer.items;
-            if (items) {
-              for (let i = 0; i < items.length; i++) {
-                const item = items[i].webkitGetAsEntry();
-                if (item?.isDirectory) {
-                  const filePath = e.dataTransfer.files[i].webkitRelativePath.split('/')[0];
-                  setPath(filePath);
-                  onAnalyze(filePath);
-                  break;
-                }
-              }
-            }
-          }}
-          onClick={() => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.webkitdirectory = true;
-            input.onchange = (e) => {
-              const files = (e.target as HTMLInputElement).files;
-              if (files && files.length > 0) {
-                const filePath = files[0].webkitRelativePath.split('/')[0];
-                setPath(filePath);
-                onAnalyze(filePath);
-              }
-            };
-            input.click();
-          }}
-        >
-          <Upload className="w-10 h-10 text-blue-500 mx-auto" />
-          <div className="space-y-1">
-            <p className="text-sm text-gray-300">
-              <span className="text-blue-500 font-medium cursor-pointer hover:underline">Click to upload</span> or drag
-              and drop a folder
-            </p>
-            <p className="text-xs text-gray-500">Select your project's root directory</p>
-          </div>
-        </div>
-
         {/* Path Input */}
         <div className="space-y-2">
           <label htmlFor="directory" className="text-sm font-medium text-gray-400">
-            Or enter path manually:
+            Enter project path:
           </label>
           <Input
             id="directory"

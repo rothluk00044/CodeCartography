@@ -81,7 +81,7 @@ export function CodebaseVisualizer({ onGoBack }: CodebaseVisualizerProps) {
               >
                 <h2 className="text-4xl font-bold text-gray-300">Welcome to Codebase Cartographer</h2>
                 <p className="text-lg text-gray-500 leading-relaxed">
-                  Upload your project folder in the right panel to begin visualizing your code's architecture.
+                  Enter your project path in the right panel to begin visualizing your code's architecture.
                 </p>
               </motion.div>
             </div>

@@ -101,17 +101,19 @@ export function CodeGraph({ data, onNodeClick, selectedNodeId }: CodeGraphProps)
         <div className="flex flex-col gap-2">
           <h3 className="text-sm font-semibold">File Types</h3>
           <div className="flex flex-wrap gap-2">
-            {['typescript', 'javascript', 'styles', 'config', 'documentation'].map((type) => (
-              <motion.div
-                key={type}
-                whileHover={{ scale: 1.05 }}
-                className={`px-2 py-1 rounded-full text-xs ${
-                  typeColors[type as keyof typeof typeColors]
-                }`}
-              >
-                {type}
-              </motion.div>
-            ))}
+            {['typescript', 'javascript', 'styles', 'config', 'documentation'].map((type) => {
+              const count = data.nodes.filter(n => n.data.fileType === type).length;
+              return (
+                <motion.div
+                  key={type}
+                  whileHover={{ scale: 1.05 }}
+                  className="px-2 py-1 rounded-full text-xs text-foreground bg-background border border-border"
+                >
+                  <span className="text-foreground">{type}</span>
+                  <span className="ml-1 text-muted-foreground">({count})</span>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </Panel>

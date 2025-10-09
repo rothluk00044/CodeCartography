@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 import { parse } from "@babel/parser"
 import traverse from "@babel/traverse"
-import type { GraphData, CustomNode, AnalyzeResponse } from "./types"
+import type { GraphData, CustomNode, AnalyzeResponse, FileNodeData } from "./types"
 
 const IGNORE_DIRS = ["node_modules", ".git", ".next", "dist", "build", "coverage", ".vercel", "out"]
 const VALID_EXTENSIONS = [".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"]
@@ -192,11 +192,23 @@ function buildGraph(fileInfos: FileInfo[], baseDir: string): GraphData {
     const relativePath = path.relative(baseDir, fileInfo.path)
     const fileName = path.basename(fileInfo.path)
 
+    // Determine file type
+    const getFileType = (fileName: string): FileNodeData['fileType'] => {
+      const ext = path.extname(fileName).toLowerCase()
+      if (ext === '.ts' || ext === '.tsx') return 'typescript'
+      if (ext === '.js' || ext === '.jsx') return 'javascript'
+      if (ext === '.css' || ext === '.scss' || ext === '.sass' || ext === '.less') return 'styles'
+      if (ext === '.json' || ext === '.config.js' || ext === '.config.ts' || fileName.includes('config')) return 'config'
+      if (ext === '.md' || ext === '.mdx' || ext === '.txt') return 'documentation'
+      return 'other'
+    }
+
     const node: CustomNode = {
       id: fileInfo.path,
       type: "fileNode",
       data: {
         label: fileName,
+        fileType: getFileType(fileName),
         dependencyCount: fileInfo.dependencies.length,
         codePreview: fileInfo.preview
       },

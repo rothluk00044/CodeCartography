@@ -3,15 +3,15 @@ import * as d3 from 'd3';
 import type { CustomNode } from './types';
 import { analyzeCodebase, categorizeNodes, type AnalyzedNode } from './code-analyzer';
 
-const CANVAS_WIDTH = 2000;  // Increased canvas size
-const CANVAS_HEIGHT = 1200;
-const CORE_SECTION = { x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2, width: 1200, height: 900 };
-const UTILITY_SECTION = { x: 200, y: CANVAS_HEIGHT / 2, width: 300, height: CANVAS_HEIGHT - 100 };
-const STANDALONE_SECTION = { x: CANVAS_WIDTH - 200, y: CANVAS_HEIGHT / 2, width: 300, height: CANVAS_HEIGHT - 100 };
+const CANVAS_WIDTH = 1600;  // More compact canvas
+const CANVAS_HEIGHT = 1000;
+const CORE_SECTION = { x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2, width: 900, height: 700 };
+const UTILITY_SECTION = { x: 150, y: CANVAS_HEIGHT / 2, width: 200, height: CANVAS_HEIGHT - 100 };
+const STANDALONE_SECTION = { x: CANVAS_WIDTH - 150, y: CANVAS_HEIGHT / 2, width: 200, height: CANVAS_HEIGHT - 100 };
 
 const defaultNodeWidth = 160;  // Fixed width
 const defaultNodeHeight = 24;  // Fixed height
-const nodeSpacing = 60;  // Fixed spacing
+const nodeSpacing = 40;  // Reduced spacing for more compact layout
 
 export type CustomEdge = Edge;
 
@@ -43,21 +43,21 @@ function layoutCoreNodes(nodes: AnalyzedNode[], edges: Edge[]): AnalyzedNode[] {
       target: e.target.toString()
     })))
       .id((d: any) => d.id)
-      .distance(300)
-      .strength(0.7)) // Stronger link strength for more structured layout
+      .distance(200) // Shorter distance for tighter layout
+      .strength(1)) // Maximum strength for more structured layout
     .force('charge', d3.forceManyBody()
-      .strength(-800)
-      .distanceMin(200)
-      .distanceMax(800))
+      .strength(-400) // Reduced repulsion for closer nodes
+      .distanceMin(100)
+      .distanceMax(400))
     .force('collide', d3.forceCollide()
       .radius(defaultNodeWidth / 2 + nodeSpacing)
       .strength(1))
     .force('center', d3.forceCenter(CORE_SECTION.x, CORE_SECTION.y))
-    // Stronger grid alignment forces
-    .force('x', d3.forceX().strength(0.3)
-      .x(d => Math.round((d.x || CORE_SECTION.x) / 100) * 100)) // Snap to 100px grid
-    .force('y', d3.forceY().strength(0.3)
-      .y(d => Math.round((d.y || CORE_SECTION.y) / 100) * 100));
+    // Stronger grid alignment forces with tighter grid
+    .force('x', d3.forceX().strength(0.5)
+      .x(d => Math.round((d.x || CORE_SECTION.x) / 60) * 60)) // Snap to 60px grid
+    .force('y', d3.forceY().strength(0.5)
+      .y(d => Math.round((d.y || CORE_SECTION.y) / 60) * 60));
 
   for (let i = 0; i < 300; ++i) simulation.tick();
 
@@ -77,21 +77,23 @@ function layoutCoreNodes(nodes: AnalyzedNode[], edges: Edge[]): AnalyzedNode[] {
 }
 
 function layoutUtilityNodes(nodes: AnalyzedNode[]): AnalyzedNode[] {
+  const nodesPerColumn = Math.ceil(Math.sqrt(nodes.length));
   return nodes.map((node, i) => ({
     ...node,
     position: {
-      x: UTILITY_SECTION.x,
-      y: UTILITY_SECTION.y - UTILITY_SECTION.height/2 + (i + 1) * 100 // Fixed 100px spacing
+      x: UTILITY_SECTION.x + (Math.floor(i / nodesPerColumn) * (defaultNodeWidth + nodeSpacing)),
+      y: UTILITY_SECTION.y - UTILITY_SECTION.height/2 + (i % nodesPerColumn) * (defaultNodeHeight + nodeSpacing)
     }
   }));
 }
 
 function layoutStandaloneNodes(nodes: AnalyzedNode[]): AnalyzedNode[] {
+  const nodesPerColumn = Math.ceil(Math.sqrt(nodes.length));
   return nodes.map((node, i) => ({
     ...node,
     position: {
-      x: STANDALONE_SECTION.x,
-      y: STANDALONE_SECTION.y - STANDALONE_SECTION.height/2 + (i + 1) * 100 // Fixed 100px spacing
+      x: STANDALONE_SECTION.x + (Math.floor(i / nodesPerColumn) * (defaultNodeWidth + nodeSpacing)),
+      y: STANDALONE_SECTION.y - UTILITY_SECTION.height/2 + (i % nodesPerColumn) * (defaultNodeHeight + nodeSpacing)
     }
   }));
 }
