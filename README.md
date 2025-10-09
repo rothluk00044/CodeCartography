@@ -41,3 +41,5 @@ Visualize your codebase's dependency graph in real-time. Understand structure, f
 - **React Flow** - Graph visualization
 - **Framer Motion** - Animations
 - **Babel Parser** - Code analysis
+
+test commit
