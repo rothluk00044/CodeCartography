@@ -148,14 +148,6 @@ CodeCartography is a powerful web-based tool that transforms your codebase into 
 - **Architecture Planning** - Visualize and improve code organization
 - **Technical Debt** - Find unused code and circular dependencies
 
-## Contributing
-
-We welcome contributions! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments
 
 - Built with the amazing [React Flow](https://reactflow.dev/) library
