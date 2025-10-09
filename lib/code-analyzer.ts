@@ -312,15 +312,57 @@ function isUtilityFile(node: AnalyzedNode): boolean {
 
 // Helper functions for individual file analysis
 function calculateCyclomaticComplexity(node: any): number {
-  let complexity = 1; // Base complexity
+  let complexity = 1; // Base complexity for the function
 
-  // Count decision points
-  if (node.type === 'IfStatement') complexity++;
-  if (node.type === 'WhileStatement') complexity++;
-  if (node.type === 'ForStatement') complexity++;
-  if (node.type === 'SwitchCase') complexity++;
-  if (node.type === 'ConditionalExpression') complexity++;
-  if (node.type === 'LogicalExpression' && (node.operator === '&&' || node.operator === '||')) complexity++;
+  // Recursively traverse the function body to count decision points
+  function traverseNode(astNode: any): void {
+    if (!astNode) return;
+
+    // Count decision points
+    switch (astNode.type) {
+      case 'IfStatement':
+        complexity++;
+        break;
+      case 'WhileStatement':
+      case 'DoWhileStatement':
+      case 'ForStatement':
+      case 'ForInStatement':
+      case 'ForOfStatement':
+        complexity++;
+        break;
+      case 'SwitchCase':
+        if (astNode.test) complexity++; // Don't count default case
+        break;
+      case 'ConditionalExpression': // Ternary operator
+        complexity++;
+        break;
+      case 'LogicalExpression':
+        if (astNode.operator === '&&' || astNode.operator === '||') {
+          complexity++;
+        }
+        break;
+      case 'CatchClause':
+        complexity++;
+        break;
+    }
+
+    // Recursively traverse child nodes
+    for (const key in astNode) {
+      if (astNode.hasOwnProperty(key)) {
+        const child = astNode[key];
+        if (Array.isArray(child)) {
+          child.forEach(traverseNode);
+        } else if (child && typeof child === 'object' && child.type) {
+          traverseNode(child);
+        }
+      }
+    }
+  }
+
+  // Start traversal from the function body
+  if (node.body) {
+    traverseNode(node.body);
+  }
 
   return complexity;
 }
@@ -407,7 +449,7 @@ function generateSummary(analysis: any, filename: string, linesOfCode: number): 
                   analysis.patterns.isUtilityFile ? 'utility module' : 
                   analysis.patterns.hasTypeScript ? 'TypeScript module' : 'code module';
 
-  return `${filename} is a ${fileType} with ${linesOfCode} lines of code. It contains ${analysis.functions} functions, ${analysis.classes} classes, and manages ${analysis.exports} exports with ${analysis.imports} imports.`;
+  return `${filename} is a ${fileType} with ${linesOfCode} lines of code. It contains ${analysis.functions} functions, ${analysis.classes} classes, and manages ${analysis.exports} export(s) with ${analysis.imports} import(s).`;
 }
 
 function generateSuggestions(analysis: any, linesOfCode: number): string[] {
